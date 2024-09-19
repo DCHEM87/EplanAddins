@@ -1,9 +1,11 @@
 ﻿using CSnA.EplAddin.PartNumberReplace.ViewModels;
 using CSnA.EplAddin.PartNumberReplace.Views;
 using Eplan.EplApi.ApplicationFramework;
-using Eplan.EplSDK.WPF;
+using Eplan.EplSDK.WPF.ThemingManager;
 using GeKtvi.Toolkit.WpfKit.Clipboard;
-using System;
+using System.Diagnostics;
+using System.Windows;
+using System.Windows.Interop;
 
 namespace CSnA.EplAddin.CustomItemNumbers
 {
@@ -13,8 +15,6 @@ namespace CSnA.EplAddin.CustomItemNumbers
 
         public bool Execute(ActionCallingContext ctx)
         {
-            Exception? result = null;
-
             var viewModel = new MainViewModel(
                 new PartNumberReplace.Models.MainModel(),
                 new PartNumberReplace.ClipboardService(new ClipboardHelperWpf())
@@ -25,17 +25,21 @@ namespace CSnA.EplAddin.CustomItemNumbers
                 DataContext = viewModel
             };
 
-            viewModel.Finished.Subscribe(e =>
+            //var factory = new DialogFactory(CommandName + "Dialog", view);
+            //new DialogManager().StartDialogModal(CommandName + "Dialog");
+
+            WPFThemingManager.Instance.RegisterControl(view);
+            var window = new Window
             {
-                result = e;
-            });
+                Title = "Замена номера детали",
+                Content = view,
+              //  ShowActivated = true,
+                Width = 500,
+            };
 
-            var factory = new DialogFactory(CommandName + "Dialog", view);
+            //new WindowInteropHelper(window).Owner = Process.GetCurrentProcess().MainWindowHandle;
 
-            new DialogManager().StartDialogModal(CommandName + "Dialog");
-
-            if (result is not null)
-                throw result;
+            window.ShowDialog();
 
             return true;
         }

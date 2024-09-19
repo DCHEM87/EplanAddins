@@ -16,11 +16,7 @@ namespace CSnA.EplAddin.PartNumberReplace.ViewModels
         public ICommand Paste => _paste;
         public ICommand Replace => _replace;
 
-        public IObservable<Exception?> Finished => _finished;
-
         [Reactive] public string ErrorMessage { get; private set; } = string.Empty;
-
-        private Subject<Exception?> _finished = new();
 
         public ObservableCollection<PartNumberModel> PartNumbers { get; } = [];
 

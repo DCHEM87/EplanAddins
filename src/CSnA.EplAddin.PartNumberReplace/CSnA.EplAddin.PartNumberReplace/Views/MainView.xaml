@@ -15,7 +15,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <tk:DataGridGK SelectionMode="Extended" SelectionUnit="CellOrRowHeader" Grid.Row="0" ItemsSource="{Binding PartNumbers}">
+        <tk:DataGridGK CanUserSortColumns="False" SelectionMode="Extended" SelectionUnit="CellOrRowHeader" Grid.Row="0" ItemsSource="{Binding PartNumbers}">
         </tk:DataGridGK>
         <TextBlock Grid.Row="1" Text="{Binding ErrorMessage, UpdateSourceTrigger=PropertyChanged}" Foreground="Red"/>
         <DockPanel Grid.Row="2" Margin="20"  LastChildFill="False">

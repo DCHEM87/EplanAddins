@@ -41,6 +41,9 @@
       <HintPath>..\..\..\lib\Eplan.EplSDK.WPF.Controlsu.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Eplan.EplSDK.WPF.ThemingManageru">
+      <HintPath>..\..\..\lib\Eplan.EplSDK.WPF.ThemingManageru.dll</HintPath>
+    </Reference>
     <Reference Include="Eplan.EplSDK.WPFu">
       <HintPath>..\..\..\lib\Eplan.EplSDK.WPFu.dll</HintPath>
       <Private>False</Private>

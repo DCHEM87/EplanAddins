@@ -30,13 +30,17 @@ namespace CSnA.EplAddin.PartNumberReplace.Models
                 var part = partsDatabase.GetPart(prop.OldValue)
                     ?? throw new BaseException($"Part \"{prop.OldValue}\" not found in database", MessageLevel.Error);
 
-                var reference = projectArticleReferences.FirstOrDefault(x => x.PartNr == prop.OldValue) 
-                    ?? throw new BaseException($"Reference \"{prop.OldValue}\" not found in project", MessageLevel.Error);
+                var references = projectArticleReferences.Where(x => x.PartNr == prop.OldValue).ToArray();
+
+                if(references.Length == 0)
+                    throw new BaseException($"References \"{prop.OldValue}\" not found in project", MessageLevel.Error);
 
                 part.PartNr = prop.NewValue;
 
-                reference.PartNr = prop.NewValue;
-                reference.StoreToObject();
+                foreach (var reference in references)
+                    reference.PartNr = prop.NewValue;
+                foreach(var reference in references)
+                    reference.StoreToObject();
 
                 _replaced.OnNext(prop);
             }
