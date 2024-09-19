@@ -1,0 +1,78 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+    <Version>1.0.3</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1701;1702</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Eplan.EplApi.AFu">
+      <HintPath>D:\Eplan\Platform\2022.0.3\Bin\Eplan.EplApi.AFu.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Eplan.EplApi.Baseu">
+      <HintPath>D:\Eplan\Platform\2022.0.3\Bin\Eplan.EplApi.Baseu.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Eplan.EplApi.DataModelu">
+      <HintPath>D:\Eplan\Platform\2022.0.3\Bin\Eplan.EplApi.DataModelu.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Eplan.EplApi.EServicesu">
+      <HintPath>D:\Eplan\Platform\2022.0.3\Bin\Eplan.EplApi.EServicesu.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Eplan.EplApi.Guiu">
+      <HintPath>D:\Eplan\Platform\2022.0.3\Bin\Eplan.EplApi.Guiu.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Eplan.EplApi.HEServicesu">
+      <HintPath>D:\Eplan\Platform\2022.0.3\Bin\Eplan.EplApi.HEServicesu.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Eplan.EplApi.MasterDatau">
+      <HintPath>D:\Eplan\Platform\2022.0.3\Bin\Eplan.EplApi.MasterDatau.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Eplan.EplApi.RecorderToolsu">
+      <HintPath>D:\Eplan\Platform\2022.0.3\Bin\Eplan.EplApi.RecorderToolsu.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Eplan.EplApi.RemoteClientu">
+      <HintPath>D:\Eplan\Platform\2022.0.3\Bin\Eplan.EplApi.RemoteClientu.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Eplan.EplApi.Remotingu">
+      <HintPath>D:\Eplan\Platform\2022.0.3\Bin\Eplan.EplApi.Remotingu.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Eplan.EplApi.Starteru">
+      <HintPath>D:\Eplan\Platform\2022.0.3\Bin\Eplan.EplApi.Starteru.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Eplan.EplApi.Systemu">
+      <HintPath>D:\Eplan\Platform\2022.0.3\Bin\Eplan.EplApi.Systemu.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Eplan.EplApi.WebServiceu">
+      <HintPath>D:\Eplan\Platform\2022.0.3\Bin\Eplan.EplApi.WebServiceu.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="GeKtvi.Toolkit" Version="0.0.9">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Configs\Addin.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

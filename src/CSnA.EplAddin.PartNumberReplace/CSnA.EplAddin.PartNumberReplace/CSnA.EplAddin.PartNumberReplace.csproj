@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net481</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GeKtvi.Toolkit" Version="$(ToolkitVersion)" />
+    <PackageReference Include="GeKtvi.Toolkit.WpfKit" Version="$(ToolkitVersion)" />
+    <PackageReference Include="IsExternalInit" Version="1.0.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
+    <PackageReference Include="ReactiveUI.WPF" Version="20.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Eplan.EplApi.AFu">
+      <HintPath>..\..\..\lib\Eplan.EplApi.AFu.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Eplan.EplApi.Baseu">
+      <HintPath>..\..\..\lib\Eplan.EplApi.Baseu.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Eplan.EplApi.DataModelu">
+      <HintPath>..\..\..\lib\Eplan.EplApi.DataModelu.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Eplan.EplApi.Guiu">
+      <HintPath>..\..\..\lib\Eplan.EplApi.Guiu.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Eplan.EplApi.MasterDatau">
+      <HintPath>..\..\..\lib\Eplan.EplApi.MasterDatau.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Eplan.EplSDK.WPF.Controlsu">
+      <HintPath>..\..\..\lib\Eplan.EplSDK.WPF.Controlsu.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Eplan.EplSDK.WPFu">
+      <HintPath>..\..\..\lib\Eplan.EplSDK.WPFu.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

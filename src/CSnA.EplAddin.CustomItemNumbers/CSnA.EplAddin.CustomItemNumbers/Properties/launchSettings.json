@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "CSnA.EplAddin.CustomItemNumbers": {
+      "commandName": "Project"
+    },
+    "Profile 1": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Program Files\\EPLAN\\Platform\\2022.0.3\\Bin\\Eplan.exe",
+      "commandLineArgs": "/Variant:\"Electric P8\""
+    }
+  }
+}
