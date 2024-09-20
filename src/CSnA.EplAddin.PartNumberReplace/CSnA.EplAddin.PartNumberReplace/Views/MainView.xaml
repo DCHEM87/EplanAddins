@@ -19,6 +19,10 @@
         </tk:DataGridGK>
         <TextBlock Grid.Row="1" Text="{Binding ErrorMessage, UpdateSourceTrigger=PropertyChanged}" Foreground="Red"/>
         <DockPanel Grid.Row="2" Margin="20"  LastChildFill="False">
+            <CheckBox 
+                IsChecked="{Binding IsAutoReplaceEnabled}" 
+                Content="Авто замена"
+                ToolTip="Заменяет элементы в проекте и базе данных, игнорирует не существующие элементы"/>
             <!--<Button Margin="17, 0, 0, 0" Width="123" Height="26" DockPanel.Dock="Right">Cancel</Button>-->
             <Button Command="{Binding Replace}" Margin="17, 0, 0, 0" Width="123" Height="26" DockPanel.Dock="Right">Заменить</Button>
         </DockPanel>

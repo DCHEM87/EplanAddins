@@ -34,8 +34,8 @@ namespace CSnA.EplAddin.PartNumberReplace
         private bool CreateContextMenu()
         {
             MultiLangString commandNameMultiString = new();
-            commandNameMultiString.AddString(ISOCode.Language.L_ru_RU, "Test");
-            commandNameMultiString.AddString(ISOCode.Language.L_en_US, "Test");
+            commandNameMultiString.AddString(ISOCode.Language.L_ru_RU, "Замена номеров деталей");
+            commandNameMultiString.AddString(ISOCode.Language.L_en_US, "Part number replace");
             string commandName = commandNameMultiString.GetStringToDisplay(global_GuiLanguage);
             if (string.IsNullOrEmpty(commandName))
                 commandName = commandNameMultiString.GetString(ISOCode.Language.L_ru_RU);

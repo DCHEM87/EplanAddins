@@ -18,24 +18,30 @@ namespace CSnA.EplAddin.PartNumberReplace.ViewModels
 
         [Reactive] public string ErrorMessage { get; private set; } = string.Empty;
 
+        public bool IsAutoReplaceEnabled { get => _mainModel.IsAutoReplaceEnabled; set => _mainModel.IsAutoReplaceEnabled = value; }
+
         public ObservableCollection<PartNumberModel> PartNumbers { get; } = [];
 
         private ReactiveCommand<Unit, Unit> _paste;
         private ReactiveCommand<Unit, Unit> _replace;
+        private readonly MainModel _mainModel;
         private readonly ClipboardService _clipboardService;
 
         public MainViewModel(MainModel mainModel, ClipboardService clipboardService)
         {
+            _mainModel = mainModel;
             _clipboardService = clipboardService;
+
+            _mainModel.IsAutoReplaceEnabled = true;
 
             _paste = ReactiveCommand.Create(() => SetPartNumbers(clipboardService.GetData()));
             _paste.ThrownExceptions.Subscribe(e => ErrorMessage = e.Message);
 
-            mainModel.Replaced.Subscribe(x => PartNumbers.Remove(x));
+            _mainModel.Replaced.Subscribe(x => PartNumbers.Remove(x));
 
             _replace = ReactiveCommand.Create(() => 
             {
-                mainModel.Replace(PartNumbers.ToArray());
+                _mainModel.Replace(PartNumbers.ToArray());
                 ErrorMessage = string.Empty;
             });
             _replace.ThrownExceptions.Subscribe(e => ErrorMessage = e.Message);
