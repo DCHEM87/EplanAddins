@@ -51,6 +51,9 @@ namespace CSnA.EplAddin.PartNumberReplace.Models
 
             if(part is not null)
             {
+                if (string.IsNullOrEmpty(prop.NewValue))
+                    throw new BaseException($"Empty part number", MessageLevel.Error);
+
                 part.PartNr = prop.NewValue;
                 isChanged = true;
             }
@@ -72,6 +75,9 @@ namespace CSnA.EplAddin.PartNumberReplace.Models
 
             if (references.Length == 0)
                 throw new BaseException($"References \"{prop.OldValue}\" not found in project", MessageLevel.Error);
+
+            if(string.IsNullOrEmpty(prop.NewValue))
+                throw new BaseException($"Empty part number", MessageLevel.Error);
 
             part.PartNr = prop.NewValue;
 
