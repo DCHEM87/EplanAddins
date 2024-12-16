@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net481</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="IsExternalInit" Version="1.0.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Eplan.EplApi.AFu">
+      <HintPath>..\..\..\lib\Eplan.EplApi.AFu.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Eplan.EplApi.Baseu">
+      <HintPath>..\..\..\lib\Eplan.EplApi.Baseu.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Eplan.EplApi.DataModelu">
+      <HintPath>..\..\..\lib\Eplan.EplApi.DataModelu.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Eplan.EplApi.Guiu">
+      <HintPath>..\..\..\lib\Eplan.EplApi.Guiu.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Eplan.EplApi.HEServicesu">
+      <HintPath>..\..\..\lib\Eplan.EplApi.HEServicesu.dll</HintPath>
+    </Reference>
+    <Reference Include="Eplan.EplApi.MasterDatau">
+      <HintPath>..\..\..\lib\Eplan.EplApi.MasterDatau.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Eplan.EplSDK.WPF.Controlsu">
+      <HintPath>..\..\..\lib\Eplan.EplSDK.WPF.Controlsu.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Eplan.EplSDK.WPF.ThemingManageru">
+      <HintPath>..\..\..\lib\Eplan.EplSDK.WPF.ThemingManageru.dll</HintPath>
+    </Reference>
+    <Reference Include="Eplan.EplSDK.WPFu">
+      <HintPath>..\..\..\lib\Eplan.EplSDK.WPFu.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>
