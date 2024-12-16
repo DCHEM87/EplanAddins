@@ -8,7 +8,7 @@ namespace CSnA.EplAddin.AutoDocumentationReferences
     {
         public static void WriteDocuments(DocumentInfo[] documents, Function function)
         {
-            WriteAssemblyReferences(documents, function, (key, documentReference, asmReference) =>
+            WriteAssemblyReferences(documents.Where(x => string.IsNullOrWhiteSpace(x.Type) == false).ToArray(), function, (key, documentReference, asmReference) =>
             {
                 documentReference.Properties["EPLAN.PartRef.UserSupplementaryField2"] = asmReference.Naming;
                 documentReference.Properties["EPLAN.PartRef.UserSupplementaryField8"] = asmReference.Description;

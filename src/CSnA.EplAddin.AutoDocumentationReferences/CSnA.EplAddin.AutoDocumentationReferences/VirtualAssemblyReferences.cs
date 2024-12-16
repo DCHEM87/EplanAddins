@@ -14,8 +14,14 @@ namespace CSnA.EplAddin.AutoDocumentationReferences
             DMObjectsFinder finder = new(project);
             var projectArticleReferences = finder.GetArticleReferences(new());
 
+            //var specifications = projectArticleReferences.Where(x => 
+            //                        string.IsNullOrWhiteSpace(x.Properties.DESIGNATION_USERDEFINED_DESCR.AsPropertyString()))
+            //                     .ToDictionary(x => x.Properties.DESIGNATION_FULLPLANT.AsPropertyString());
 
-            var refsByPlant = projectArticleReferences.GroupBy(x => x.Properties.DESIGNATION_FULLPLANT.AsPropertyString()).ToDictionary(x => x.Key);
+            var refsByPlant = projectArticleReferences  
+                                .GroupBy(x => 
+                                    x.Properties.DESIGNATION_FULLPLANT.AsPropertyString())
+                                .ToDictionary(x => x.Key);
 
 
             var refs = documents
@@ -27,7 +33,7 @@ namespace CSnA.EplAddin.AutoDocumentationReferences
                     if (refsByPlant.TryGetValue(item.Designation, out var value))
                         return new VirtualAssemblyReference(
                             item.Applicability,
-                            "???",
+                            item.Naming,
                             item.Designation
                         );
                     else
@@ -41,5 +47,6 @@ namespace CSnA.EplAddin.AutoDocumentationReferences
         }
 
     }
+
     public record VirtualAssemblyReference(string PlacementDesignation, string Naming, string ReferenceToSubAssembly);
 }
