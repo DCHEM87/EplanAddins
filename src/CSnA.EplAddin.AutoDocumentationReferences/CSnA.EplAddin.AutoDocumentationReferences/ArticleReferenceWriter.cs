@@ -4,9 +4,11 @@ using System.Linq;
 
 namespace CSnA.EplAddin.AutoDocumentationReferences
 {
-    internal static class ArticleReferenceWriter
+    internal class ArticleReferenceWriter(WriteLogger logger)
     {
-        public static void WriteDocuments(DocumentInfo[] documents, Function function)
+        private readonly WriteLogger _logger = logger;
+
+        public void WriteDocuments(DocumentInfo[] documents, Function function)
         {
             WriteAssemblyReferences(documents.Where(x => string.IsNullOrWhiteSpace(x.Type) == false).ToArray(), function, (key, documentReference, asmReference) =>
             {
@@ -17,23 +19,24 @@ namespace CSnA.EplAddin.AutoDocumentationReferences
                 documentReference.Properties["ЕСКД.Раздел"] = "Документация";
                 documentReference.Properties["ЕСКД.Сортировка_раздел"] = "01_Документация";
             },
-            reference => reference.Designation + reference.Type);
+            r => r.Designation + r.Type);
         }
 
-        public static void WriteVirtualAssemblyReferences(VirtualAssemblyReference[] references, Function function)
+        public void WriteVirtualAssemblyReferences(VirtualAssemblyReference[] references, Function function)
         {
             WriteAssemblyReferences(references, function, (key, documentReference, asmReference) =>
             {
                 documentReference.Properties["EPLAN.PartRef.UserSupplementaryField2"] = asmReference.Naming;
                 documentReference.Properties["EPLAN.PartRef.UserSupplementaryField17"] = asmReference.ReferenceToSubAssembly;
+                documentReference.Properties["EPLAN.PartRef.UserSupplementaryField18"] = "А4";
                 documentReference.Properties["ЕСКД.Раздел"] = "Сборочные единицы";
                 documentReference.Properties["ЕСКД.Сортировка_раздел"] = "02_Сборочные единицы";
                 documentReference.Properties["Teamcenter.TeamcenterExportChild"] = asmReference.ReferenceToSubAssembly;
             },
-            reference => reference.ReferenceToSubAssembly);
+            r => r.ReferenceToSubAssembly);
         }
 
-        private static void WriteAssemblyReferences<T>(T[] references,
+        private void WriteAssemblyReferences<T>(T[] references,
                                                     Function function,
                                                     Action<string, ArticleReference, T> writeCallback,
                                                     Func<T, string> referenceKeySelector)
@@ -46,9 +49,15 @@ namespace CSnA.EplAddin.AutoDocumentationReferences
                         .SelectMany(x => (x as Function)?.ArticleReferences ?? [])
                         .FirstOrDefault(x => x.PartNr == key)
                         is ArticleReference article)
+                {
                     articleReference = article;
+                    _logger.LogUpdate(key);
+                }
                 else
+                {
                     articleReference = function.AddArticleReference(key, "1", 1);
+                    _logger.LogCreate(key);
+                }
 
                 writeCallback.Invoke(key, articleReference, reference);
                 articleReference.StoreToObject();

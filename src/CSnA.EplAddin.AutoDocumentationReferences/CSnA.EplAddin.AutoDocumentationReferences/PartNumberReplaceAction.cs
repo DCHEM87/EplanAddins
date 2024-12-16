@@ -4,6 +4,7 @@ using Eplan.EplApi.DataModel;
 using Eplan.EplApi.DataModel.Graphics;
 using Eplan.EplApi.DataModel.MasterData;
 using Eplan.EplApi.HEServices;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,45 +16,48 @@ namespace CSnA.EplAddin.AutoDocumentationReferences
 
         public bool Execute(ActionCallingContext ctx)
         {
-            //var dbg1 = new SelectionSet();
             var project = new SelectionSet().GetCurrentProject(true);
-            var documents = Documents.GetDocuments(project);
-            var refs = VirtualAssemblyReferences.GetReferences(project, documents);
 
-            var functions = GetOrCreateFunction(project, "DOCS", 10);
-            foreach (var group in documents.GroupBy(x => x.Designation))
-                ArticleReferenceWriter.WriteDocuments([.. group], functions[group.Key]);
+            var dbg = new SelectionSet();
 
-            var virtualAssemblyReferences = GetOrCreateFunction(project, "SUBASM", 20);
-            foreach (var group in refs.GroupBy(x => x.PlacementDesignation).Where(x => virtualAssemblyReferences.ContainsKey(x.Key)))
-                ArticleReferenceWriter.WriteVirtualAssemblyReferences([.. group], virtualAssemblyReferences[group.Key]);
+            var pagesByProject = new SelectionSet().SelectionRecursive
+                                    .Where(x => x is Page)
+                                    .Cast<Page>()
+                                    .GroupBy(x => x.Project);
 
+            WriteLogger logger = new();
+            ArticleReferenceWriter referenceWriter = new(logger);
 
-            //var viewModel = new MainViewModel(
-            //    new PartNumberReplace.Models.MainModel(),
-            //    new PartNumberReplace.ClipboardService(new ClipboardHelperWpf())
-            //);
+            List<string> addedComponents = [];
 
-            //var view = new MainView()
-            //{<EPLAN.Page.UserSupplementaryField29> 29_Перв.примен.
-            //    DataContext = viewModel
-            //};
+            using UndoStep step = new UndoManager().CreateUndoStep();
 
-            //var factory = new DialogFactory(CommandName + "Dialog", view);
-            //new DialogManager().StartDialogModal(CommandName + "Dialog");
+            foreach (var pageByProject in pagesByProject)
+            {
+                var documents = Documents.GetDocuments([.. pageByProject]);
+                var refs = VirtualAssemblyReferences.GetReferences(project, documents);
 
-            //WPFThemingManager.Instance.RegisterControl(view);
-            //var window = new Window
-            //{
-            //    Title = "Замена номера детали",
-            //    Content = view,
-            //    ShowActivated = true,
-            //    Width = 500,
-            //};
+                var functions = GetOrCreateFunction(pageByProject.Key, "DOCS", 10);
+                foreach (var group in documents.GroupBy(x => x.Designation))
+                {
+                    referenceWriter.WriteDocuments([.. group], functions[group.Key]);
+                }
 
-            //new WindowInteropHelper(window).Owner = Process.GetCurrentProcess().MainWindowHandle;
+                var virtualAssemblyReferences = GetOrCreateFunction(pageByProject.Key, "SUBASM", 20);
+                foreach (var group in refs.GroupBy(x => x.PlacementDesignation).Where(x => virtualAssemblyReferences.ContainsKey(x.Key)))
+                {
+                    referenceWriter.WriteVirtualAssemblyReferences([.. group], virtualAssemblyReferences[group.Key]);
+                }
+            }
 
-            //window.ShowDialog();
+            new Decider().Decide(EnumDecisionType.eOkDecision,
+                                 logger.ToString(),
+                                 "Компоненты",
+                                 EnumDecisionReturn.eOK,
+                                 EnumDecisionReturn.eOK,
+                                 "AddDocumentationReferencesActionOkResult",
+                                 true,
+                                 EnumDecisionIcon.eINFORMATION);
 
             return true;
         }
@@ -87,16 +91,16 @@ namespace CSnA.EplAddin.AutoDocumentationReferences
                 function.SmartLock();
                 function.Location = new PointD(0, -offset);
                 function.Name = funcName;
-                function.VisibleName = identifier;
+                //function.VisibleName = identifier;
 
                 if (function.GetGraphics() is GraphicalPlacement placement)
                     placement.IsVisible = false;
 
-                foreach (var propertyPlacement in function.PropertyPlacements)
-                {
-                    propertyPlacement.SmartLock();
-                    propertyPlacement.IsVisible = false;
-                }
+                //foreach (var propertyPlacement in function.PropertyPlacements)
+                //{
+                //    propertyPlacement.SmartLock();
+                //    propertyPlacement.IsVisible = false;
+                //}
 
                 designatorToFunction[targetPage.Key] = function;
             }

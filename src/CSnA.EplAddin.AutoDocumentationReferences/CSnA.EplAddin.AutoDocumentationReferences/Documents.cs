@@ -1,21 +1,15 @@
 ﻿using Eplan.EplApi.DataModel;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace CSnA.EplAddin.AutoDocumentationReferences
 {
     internal class Documents
     {
-        public static DocumentInfo[] GetDocuments(Project project)
+        public static DocumentInfo[] GetDocuments(Page[] pages)
         {
-            var pages = project.Pages;
-
             return pages
-                .GroupBy(x =>  new { x.Properties.DESIGNATION_FULLPLANT, x.Properties.DESIGNATION_USERDEFINED_DESCR })
-                //.Where(x => string.IsNullOrWhiteSpace(x.First().Properties.DESIGNATION_USERDEFINED_DESCR.AsPropertyString()) == false)
+                .GroupBy(x => new { x.Properties.DESIGNATION_FULLPLANT, x.Properties.DESIGNATION_USERDEFINED_DESCR })
                 .Select(x =>
                 {
                     var pageProperties = x.First().Properties;
@@ -23,6 +17,7 @@ namespace CSnA.EplAddin.AutoDocumentationReferences
                         x => SheetFormatFromTemplateName(x.Properties.PAGE_FORMPLOT.AsPropertyString())
                     )
                     .Distinct()
+                    .OrderByDescending(x => x)
                     .ToArray();
 
                     string sheetFormat = string.Empty;
@@ -30,7 +25,7 @@ namespace CSnA.EplAddin.AutoDocumentationReferences
                     if (formats.Length > 1)
                     {
                         sheetFormat = "*)";
-                        description = "*)" + string.Join(", ", formats);
+                        description = "*) " + string.Join(", ", formats);
                     }
                     else
                     {
@@ -38,8 +33,8 @@ namespace CSnA.EplAddin.AutoDocumentationReferences
                     }
 
                     return new DocumentInfo(
-                        pageProperties.DESIGNATION_USERDEFINED_DESCR.AsPropertyString() /*x.Key.PAGE_ADDITIONALPAGE*/,
-                        sheetFormat, 
+                        pageProperties.DESIGNATION_USERDEFINED_DESCR.AsPropertyString(),
+                        sheetFormat,
                         pageProperties.DESIGNATION_FULLPLANT.AsPropertyString(),
                         pageProperties.PAGE_NOMINATIOMN.AsPropertyString(),
                         pageProperties["EPLAN.Page.UserSupplementaryField29"].AsPropertyString(),
@@ -49,7 +44,7 @@ namespace CSnA.EplAddin.AutoDocumentationReferences
                 .ToArray();
         }
 
-        private static string SheetFormatFromTemplateName(string templateName) => 
+        private static string SheetFormatFromTemplateName(string templateName) =>
             Regex.Match(templateName, "_(?<format>A.*?)_").Groups["format"].Captures[0].Value;
     }
 
