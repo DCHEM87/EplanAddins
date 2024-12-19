@@ -34,7 +34,7 @@ namespace CSnA.EplAddin.AutoDocumentationReferences
 
             foreach (var pageByProject in pagesByProject)
             {
-                var documents = Documents.GetDocuments([.. pageByProject]);
+                var documents = DocumentsReader.GetDocuments([.. pageByProject]);
                 var refs = VirtualAssemblyReferences.GetReferences(project, documents);
 
                 var functions = GetOrCreateFunction(pageByProject.Key, "DOCS", 10);
@@ -71,9 +71,7 @@ namespace CSnA.EplAddin.AutoDocumentationReferences
             Dictionary<string, Function> designatorToFunction = [];
             foreach (var targetPage in targetPages)
             {
-                //var dbg = targetPage.Page.Properties.INSTALLATIONSPACE_FULLNAME;
                 string funcName = GetNameForFunction(targetPage.Page) + "-" + identifier;
-                //targetPage.Page.IdentifyingName.Substring(0, targetPage.Page.IdentifyingName.IndexOf('/')) + "-" + identifier;
 
                 if (targetPage.Page.Functions.FirstOrDefault(x => x.Name == funcName) is Function func)
                 {
@@ -91,16 +89,9 @@ namespace CSnA.EplAddin.AutoDocumentationReferences
                 function.SmartLock();
                 function.Location = new PointD(0, -offset);
                 function.Name = funcName;
-                //function.VisibleName = identifier;
 
                 if (function.GetGraphics() is GraphicalPlacement placement)
                     placement.IsVisible = false;
-
-                //foreach (var propertyPlacement in function.PropertyPlacements)
-                //{
-                //    propertyPlacement.SmartLock();
-                //    propertyPlacement.IsVisible = false;
-                //}
 
                 designatorToFunction[targetPage.Key] = function;
             }

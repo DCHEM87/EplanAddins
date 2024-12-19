@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace CSnA.EplAddin.AutoDocumentationReferences
 {
-    internal class Documents
+    internal class DocumentsReader
     {
         public static DocumentInfo[] GetDocuments(Page[] pages)
         {
