@@ -1,5 +1,6 @@
 ﻿using Eplan.EplApi.DataModel;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 
@@ -31,7 +32,14 @@ namespace CSnA.EplAddin.BackupProjectOnLoad
                     CopyRecursively(dir, destination.CreateSubdirectory(dir.Name));
 
             foreach (var file in source.GetFiles())
-                file.CopyTo(Path.Combine(destination.FullName, file.Name));
+                try
+                {
+                    file.CopyTo(Path.Combine(destination.FullName, file.Name));
+                }
+                catch (IOException e) when (e.HResult == -2147024863) // file locked by other process
+                {
+                    Debug.WriteLine(e);
+                }
         }
 
         private class TempFolder : IDisposable

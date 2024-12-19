@@ -10,7 +10,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CSnA.EplAddin.BackupProjectOnLoad
 {
@@ -75,7 +77,7 @@ namespace CSnA.EplAddin.BackupProjectOnLoad
                 ContextMenuName = "1007"
             };
 
-            bool isAdded = new ContextMenu().AddMenuItem(oCtxLoc, commandName, TestBackUpAction.CommandName, true, false);
+            bool isAdded = new Eplan.EplApi.Gui.ContextMenu().AddMenuItem(oCtxLoc, commandName, TestBackUpAction.CommandName, true, false);
             Debug.WriteLine($"Debug command added: {isAdded}");
 #endif
             return true;
@@ -116,7 +118,9 @@ namespace CSnA.EplAddin.BackupProjectOnLoad
             {
                 try
                 {
-                    new BackUpManager(AppConfigHelper.LoadConfig<BackUpConfig>("BackUpConfig.config")).BackUpIfNeeded(project);
+                    new BackUpManager(
+                        AppConfigHelper.LoadConfig<BackUpConfig>("BackUpConfig.config", AddinPath + Path.DirectorySeparatorChar + "Configs"))
+                        .BackUpIfNeeded(project);
                 }
                 catch (Exception e)
                 {
@@ -136,7 +140,11 @@ namespace CSnA.EplAddin.BackupProjectOnLoad
 
         private void LogError(Exception exception)
         {
+            NativeWindow window = new();
+            window.AssignHandle(Process.GetCurrentProcess().MainWindowHandle);
+
             BaseException exc = new(exception.Message, MessageLevel.Error);
+            MessageBox.Show(window, exception.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             exc.FixMessage();
         }
 
